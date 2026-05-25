@@ -1,19 +1,19 @@
 package com.example.taxa;
 
+import java.net.InetAddress;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.InetAddress;
-import java.util.Map;
 
 @RestController
 public class PriceController {
 
     private final RestTemplate rest = new RestTemplate();
     private final String taxServiceUrl = System.getenv().getOrDefault(
-            "TAX_SERVICE_URL",
+            "TAX_SERVICE_URL",//TAX_SERVICE_URL is set in ../k8s/tax-a|b/service-a|b.yaml deployment yaml,  
             "http://service-b:4000"   // fallback for local testing ONLY
     );
 
@@ -27,7 +27,7 @@ public class PriceController {
         );
 
         double tax = Double.parseDouble(taxResponse.get("tax").toString());
-        double total = amount + tax;
+        double total = amount + (amount*tax/100);
 
         String hostname = InetAddress.getLocalHost().getHostName();
 
