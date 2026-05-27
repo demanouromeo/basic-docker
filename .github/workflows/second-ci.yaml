@@ -1,0 +1,14 @@
+name: Second CI
+on:
+  push
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Say Hello
+        run: echo "Hello! From the second CI workflow."
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
